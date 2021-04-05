@@ -32,6 +32,8 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	lineNum := 0
 	printed := 0
+	buf := make([]byte, 0, 1024*1024)
+	scanner.Buffer(buf, 10*1024*1024)
 	var readName string
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -52,4 +54,9 @@ func main() {
 			break
 		}
 	}
+	err := scanner.Err()
+	if err != nil {
+		log.Println("got scanning error:", err)
+	}
+	log.Println("found", printed, "records among", lineNum, "lines")
 }
